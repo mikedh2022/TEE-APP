@@ -1,0 +1,12 @@
+version: '2.1'
+
+services:
+  web:
+    build: .
+    command: server
+    volumes:
+      - .:/opt/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - docker-compose.env

@@ -1,0 +1,14 @@
+.cache
+__pycache__
+*.pyc
+.pytest_cache
+.idea
+
+
+.idea/*
+terraform.tfstate
+terraform.tfstate.backup
+.terraform
+*.backup
+*.zip
+*.tfstate

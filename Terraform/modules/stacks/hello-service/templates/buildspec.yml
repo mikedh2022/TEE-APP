@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR ... | tee -a log.txt
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION  --no-include-email)
+      - SOURCE_VERSION=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
+      - docker-compose build
+      - docker-compose up -d
+      - docker-compose ps
+      - sleep 10
+      - docker-compose logs web
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker images
+      - docker tag web ${REPOSITORY_URI}:latest
+      - docker tag web ${REPOSITORY_URI}:$SOURCE_VERSION
+      - docker push ${REPOSITORY_URI}:latest
+      - docker push ${REPOSITORY_URI}:$SOURCE_VERSION
+
+artifacts:
+  files: imagedefinitions.json

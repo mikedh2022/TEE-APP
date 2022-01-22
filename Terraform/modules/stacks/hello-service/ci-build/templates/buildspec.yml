@@ -1,0 +1,10 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+    - docker-compose pull --ignore-pull-failures --parallel 2>&1 | tee -a log.txt
+
+  build:
+    commands:
+    - docker-compose build
